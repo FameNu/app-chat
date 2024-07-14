@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer components {
-    body {
-        @apply w-4/5 h-screen mx-auto flex flex-col items-center justify-center;
-    }
+  body {
+    @apply w-4/5 h-screen mx-auto flex flex-col items-center justify-center;
+  }
 
-    #root {
-        @apply w-full h-full;
-    }
+  #root {
+    @apply w-full h-full;
+  }
 }

@@ -1,6 +1,6 @@
-import BoxListMessage from "./components/BoxListMessage"
-import Chat from "./models/Chat"
-import { useState } from "react"
+import BoxListMessage from './components/BoxListMessage'
+import Chat from './models/Chat'
+import { useState } from 'react'
 
 function App() {
   const [chats, setChats] = useState<Chat[]>([])
@@ -38,16 +38,29 @@ function App() {
         <div className="label">
           <span className="label-text">Enter your username</span>
         </div>
-        <input type="text" className="input input-bordered" placeholder="Type Here" onChange={updateUsername} />
+        <input
+          type="text"
+          className="input input-bordered"
+          placeholder="Type Here"
+          onChange={updateUsername}
+        />
       </label>
       <div className="flex items-end gap-4">
         <label className="form-control w-full max-w-sm">
           <div className="label">
             <span className="label-text">Enter your message</span>
           </div>
-          <input type="text" className="input input-bordered" placeholder="Type Here" value={message} onChange={updateMessage} />
+          <input
+            type="text"
+            className="input input-bordered"
+            placeholder="Type Here"
+            value={message}
+            onChange={updateMessage}
+          />
         </label>
-        <button className="btn" onClick={sendMessage}>Send</button>
+        <button className="btn" onClick={sendMessage}>
+          Send
+        </button>
       </div>
       <BoxListMessage chats={chats} username={username} />
     </div>

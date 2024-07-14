@@ -1,6 +1,6 @@
 interface Chat {
-    username: string
-    message: string
+  username: string
+  message: string
 }
 
 export default Chat
