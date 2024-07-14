@@ -1,4 +1,4 @@
-import BoxMessage from "@/components/BoxMessage"
+import BoxListMessage from "./components/BoxListMessage"
 import Chat from "./models/Chat"
 import { useState } from "react"
 
@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="flex flex-col gap-4 h-full">
-      <h1 className="text-2xl font-bold text-center">Welcome to u and me Chat Group</h1>
+      <h1 className="text-2xl font-bold text-center my-6">Welcome to u and me Chat Group</h1>
       <label className="form-control w-full max-w-sm">
         <div className="label">
           <span className="label-text">Enter your username</span>
@@ -49,7 +49,7 @@ function App() {
         </label>
         <button className="btn" onClick={sendMessage}>Send</button>
       </div>
-      <BoxMessage chats={chats} />
+      <BoxListMessage chats={chats} username={username} />
     </div>
   )
 }
