@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+  :root, body {
+    @apply overflow-hidden;
+  }
+
   body {
     @apply w-4/5 h-screen mx-auto flex flex-col items-center justify-center;
   }
