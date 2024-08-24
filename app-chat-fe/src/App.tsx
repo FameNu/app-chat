@@ -1,12 +1,13 @@
 import BoxListMessage from './components/BoxListMessage'
 import Chat from './models/Chat'
+import { setCookie, getCookie, deleteCookie } from './services/cookie'
 import { useState } from 'react'
 
 function App() {
   const [chats, setChats] = useState<Chat[]>([])
 
-  const [message, setMessage] = useState('')
-  const [username, setUsername] = useState('')
+  const [message, setMessage] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
 
   const updateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
@@ -17,7 +18,7 @@ function App() {
   }
 
   const sendMessage = () => {
-    if (username === '' || message === '') {
+    if (username.trim() === '' || message.trim() === '') {
       alert('Please fill in the username and message')
       return
     }
@@ -28,7 +29,18 @@ function App() {
     setChats([...chats, newChat])
     console.log(newChat)
 
+    setCookie('chats', JSON.stringify([...chats, newChat]))
+
     setMessage('')
+  }
+
+  const clearChat = () => {
+    setChats([])
+    deleteCookie('chats')
+  }
+
+  const logCookieChats = () => {
+    console.log(getCookie('chats'))
   }
 
   return (
@@ -61,6 +73,8 @@ function App() {
         <button className="btn" onClick={sendMessage}>
           Send
         </button>
+        <button className='btn' onClick={clearChat}>Clear all Chat</button>
+        <button className='btn' onClick={logCookieChats}>Get Log Chats</button>
       </div>
       <BoxListMessage chats={chats} username={username} />
     </div>
