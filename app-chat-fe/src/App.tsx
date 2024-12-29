@@ -58,23 +58,29 @@ function App() {
         />
       </label>
       <div className="flex items-end gap-4">
-        <label className="form-control w-full max-w-sm">
-          <div className="label">
-            <span className="label-text">Enter your message</span>
-          </div>
-          <input
-            type="text"
-            className="input input-bordered"
-            placeholder="Type Here"
-            value={message}
-            onChange={updateMessage}
-          />
-        </label>
-        <button className="btn" onClick={sendMessage}>
-          Send
+        <form className="flex-grow flex items-end gap-4 max-w-sm" onSubmit={sendMessage}>
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Enter your message</span>
+            </div>
+            <input
+              type="text"
+              className="input input-bordered"
+              placeholder="Type Here"
+              value={message}
+              onChange={updateMessage}
+            />
+          </label>
+          <button type="submit" className="btn">
+            Send
+          </button>
+        </form>
+        <button className="btn" onClick={clearChat}>
+          Clear all Chat
         </button>
-        <button className='btn' onClick={clearChat}>Clear all Chat</button>
-        <button className='btn' onClick={logCookieChats}>Get Log Chats</button>
+        <button className="btn" onClick={logCookieChats}>
+          Get Log Chats
+        </button>
       </div>
       <BoxListMessage chats={chats} username={username} />
     </div>
