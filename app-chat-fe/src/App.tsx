@@ -44,7 +44,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col gap-4 h-full">
+    <div className="flex flex-col gap-4 h-full w-10/12 mx-auto">
       <h1 className="text-2xl font-bold text-center my-6">Welcome to u and me Chat Group</h1>
       <label className="form-control w-full max-w-sm">
         <div className="label">

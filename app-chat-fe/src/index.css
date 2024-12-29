@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply w-4/5 h-screen mx-auto flex flex-col items-center justify-center;
+    @apply h-screen mx-auto flex flex-col items-center justify-center;
   }
 
   #root {
