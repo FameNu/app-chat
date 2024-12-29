@@ -4,7 +4,10 @@ import { setCookie, getCookie, deleteCookie } from './services/cookie'
 import { useState } from 'react'
 
 function App() {
-  const [chats, setChats] = useState<Chat[]>([])
+  const getChats: string | null = getCookie('chats')
+  const loadChats: Chat[] = getChats ? JSON.parse(getChats) : []
+
+  const [chats, setChats] = useState<Chat[]>(loadChats)
 
   const [message, setMessage] = useState<string>('')
   const [username, setUsername] = useState<string>('')
