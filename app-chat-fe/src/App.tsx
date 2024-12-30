@@ -7,7 +7,7 @@ function App() {
   const getChats: string | null = getCookie('chats')
   const loadChats: Chat[] = getChats ? JSON.parse(getChats) : []
 
-  const getUser: string | null = getCookie('user') || ''
+  const getUser: string = getCookie('user') || ''
 
   const [chats, setChats] = useState<Chat[]>(loadChats)
 
