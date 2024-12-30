@@ -84,7 +84,7 @@ function App() {
         </button>
       </form>
       <div className="flex items-end gap-4">
-        <form className="flex-grow flex items-end gap-4 max-w-sm" onSubmit={sendMessage}>
+        <form className="flex-grow flex items-end gap-4 max-w-sm" onSubmit={(e) => handleEventSubmitForm(sendMessage, e)}>
           <label className="form-control w-full">
             <div className="label">
               <span className="label-text">Enter your message</span>
