@@ -24,12 +24,12 @@ function App() {
   }
 
   const sendMessage = () => {
-    if (username.trim() === '' || message.trim() === '') {
+    if (currentUser.trim() === '' || message.trim() === '') {
       alert('Please fill in the username and message')
       return
     }
     const newChat: Chat = {
-      username: username,
+      username: currentUser,
       message: message
     }
     setChats([...chats, newChat])
@@ -108,7 +108,7 @@ function App() {
           Get Log Chats
         </button>
       </div>
-      <BoxListMessage chats={chats} username={username} />
+      <BoxListMessage chats={chats} username={currentUser} />
     </div>
   )
 }
