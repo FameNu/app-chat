@@ -27,8 +27,11 @@ export const useUserStore = create<UserStore>((set) => ({
   setCurrentUser: (username: string) => {
     set((state) => {
       const userExistOnIndex: number = state.userList.findIndex((user) => user.name.toLowerCase() === username.toLowerCase())
+      let currentUser: User | null = null
+      let updateUserList: User[] = []
+      
       if (userExistOnIndex === -1) {
-        const newUser: User = {
+        currentUser = {
           id: state.userList.length + 1,
           name: username,
           email: `${username}@mail.com`,
@@ -36,29 +39,23 @@ export const useUserStore = create<UserStore>((set) => ({
           latestUserAt: new Date()
         }
 
-        const updateUserList: User[] = [...state.userList, newUser]
-
-        setCookie('user', JSON.stringify(newUser))
-        localStorage.setItem('users', JSON.stringify(updateUserList))
-
-        return {
-          currentUser: newUser,
-          userList: updateUserList
-        }
+        updateUserList = [...state.userList, currentUser]
       } else {
-        const user: User = state.userList[userExistOnIndex]
-        user.latestUserAt = new Date()
+        updateUserList = state.userList.map((user, index) => {
+          return index === userExistOnIndex
+            ? { ...user, latestUserAt: new Date() }
+            : user
+        })
 
-        const users: User[] = [...state.userList]
-        users[userExistOnIndex] = user
+        currentUser = updateUserList[userExistOnIndex]
+      }
 
-        setCookie('user', JSON.stringify(user))
-        localStorage.setItem('users', JSON.stringify(users))
+      setCookie('user', JSON.stringify(currentUser))
+      localStorage.setItem('users', JSON.stringify(updateUserList))
 
-        return {
-          currentUser: user,
-          userList: users
-        }
+      return {
+        currentUser,
+        userList: updateUserList
       }
     })
   },
@@ -69,7 +66,7 @@ export const useUserStore = create<UserStore>((set) => ({
   clearUsers: () => {
     deleteCookie('user')
     localStorage.removeItem('users')
-    
+
     set({
       currentUser: null,
       userList: []
