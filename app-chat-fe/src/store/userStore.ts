@@ -14,7 +14,7 @@ interface UserStore {
 // collect user list on local storage
 // collect user (current user) on cookie
 
-export const useUserStore = create<UserStore>((set, get) => ({
+export const useUserStore = create<UserStore>((set) => ({
   currentUser: null,
   userList: [],
   loadUser: async () => {
@@ -67,7 +67,8 @@ export const useUserStore = create<UserStore>((set, get) => ({
     set({ currentUser: null })
   },
   clearUsers: () => {
-    get().logoutUser()
+    deleteCookie('user')
+    set({ currentUser: null })
 
     localStorage.removeItem('users')
     set({ userList: [] })
