@@ -25,9 +25,9 @@ export const useUserStore = create<UserStore>((set, get) => ({
     set({ userList: users })
   },
   setCurrentUser: (username: string) => {
-    const userExist: number = get().userList.findIndex((user) => user.name === username)
-    if (userExist === -1) {
-      set((state) => {
+    set((state) => {
+      const userExistOnIndex: number = state.userList.findIndex((user) => user.name.toLowerCase() === username.toLowerCase())
+      if (userExistOnIndex === -1) {
         const newUser: User = {
           id: state.userList.length + 1,
           name: username,
@@ -45,19 +45,22 @@ export const useUserStore = create<UserStore>((set, get) => ({
           currentUser: newUser,
           userList: updateUserList
         }
-      })
-    } else {
-      const user: User = get().userList[userExist]
-      user.latestUserAt = new Date()
+      } else {
+        const user: User = state.userList[userExistOnIndex]
+        user.latestUserAt = new Date()
 
-      const users: User[] = [...get().userList]
-      users[userExist] = user
-      set({ userList: users })
+        const users: User[] = [...state.userList]
+        users[userExistOnIndex] = user
 
-      // save to cookie
-      setCookie('user', JSON.stringify(user))
-      localStorage.setItem('users', JSON.stringify(users))
-    }
+        setCookie('user', JSON.stringify(user))
+        localStorage.setItem('users', JSON.stringify(users))
+
+        return {
+          currentUser: user,
+          userList: users
+        }
+      }
+    })
   },
   logoutUser: () => {
     deleteCookie('user')
