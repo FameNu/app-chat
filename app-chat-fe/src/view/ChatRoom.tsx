@@ -1,22 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Chat from '@/models/Chat'
+import User from '@/models/User'
 
 import { getCookie, setCookie, deleteCookie } from '@/services/cookie'
+import { useUserStore } from '@/store/userStore'
 
 import BoxListMessage from '@/components/BoxListMessage'
 
 const ChatRoom: React.FC = () => {
+  const userStore = useUserStore()
+  const currentUser: User | null = useUserStore((state) => state.currentUser)
+
   const getChats: string | null = getCookie('chats')
   const loadChats: Chat[] = getChats ? JSON.parse(getChats) : []
-
-  const getUser: string = getCookie('user') || ''
 
   const [chats, setChats] = useState<Chat[]>(loadChats)
 
   const [message, setMessage] = useState<string>('')
   const [username, setUsername] = useState<string>('')
-  const [currentUser, setCurrentUser] = useState<string>(getUser)
+
+  useEffect(() => {
+    const startLoad = () => {
+      userStore.loadUser()
+    }
+
+    startLoad()
+  })
 
   const updateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
@@ -27,12 +37,12 @@ const ChatRoom: React.FC = () => {
   }
 
   const sendMessage = () => {
-    if (currentUser.trim() === '' || message.trim() === '') {
+    if (currentUser?.name.trim() === '' || message.trim() === '') {
       alert('Please fill in the username and message')
       return
     }
     const newChat: Chat = {
-      username: currentUser,
+      username: currentUser?.name || '',
       message: message
     }
     setChats([...chats, newChat])
@@ -53,8 +63,7 @@ const ChatRoom: React.FC = () => {
   }
 
   const updateUser = () => {
-    setCurrentUser(username)
-    setCookie('user', username)
+    userStore.setCurrentUser(username)
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -66,7 +75,7 @@ const ChatRoom: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 h-full w-10/12 mx-auto">
       <h1 className="text-2xl font-bold text-center my-6">Welcome to u and me Chat Group</h1>
-      <h2>{currentUser}</h2>
+      <h2>{currentUser?.name}</h2>
       <form
         className="flex items-end gap-4 max-w-sm"
         onSubmit={(e) => handleEventSubmitForm(updateUser, e)}
@@ -114,7 +123,7 @@ const ChatRoom: React.FC = () => {
           Get Log Chats
         </button>
       </div>
-      <BoxListMessage chats={chats} username={currentUser} />
+      <BoxListMessage chats={chats} username={currentUser?.name || ''} />
     </div>
   )
 }
