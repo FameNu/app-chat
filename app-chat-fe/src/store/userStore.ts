@@ -5,7 +5,7 @@ import { getCookie, setCookie, deleteCookie } from '@/services/cookie'
 interface UserStore {
   currentUser: User | null
   userList: User[]
-  getCookieUser: (keyOfCookie: 'user' | 'users') => User | null
+  getCookieUser: (keyOfCookie: 'user' | 'users') => Promise<User | User[] | null>
   loadUser: () => void
   setCurrentUser: (username: string) => void
   logoutUser: () => void
@@ -18,16 +18,20 @@ interface UserStore {
 export const useUserStore = create<UserStore>((set, get) => ({
   currentUser: null,
   userList: [],
-  getCookieUser: (keyOfCookie): User | null => {
+  getCookieUser: async (keyOfCookie): Promise<User | User[] | null> => {
     const userCookie: string | null = getCookie(keyOfCookie)
     if (!userCookie) {
       return null
     }
     return JSON.parse(userCookie)
   },
-  loadUser: () => {
-    const user: User | null = get().getCookieUser('user')
-    set({ currentUser: user || null })
+  loadUser: async () => {
+    const user: User | null = await get().getCookieUser('user')
+    if (user) {
+      set({ currentUser: user })
+    } else {
+      set({ currentUser: null })
+    }
 
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]')
     set({ userList: users })
@@ -42,6 +46,8 @@ export const useUserStore = create<UserStore>((set, get) => ({
         enteredAt: new Date(),
         latestUserAt: new Date()
       }
+
+      set({ currentUser: newUser })
 
       const users: User[] = [...get().userList, newUser]
       set({ userList: users })
