@@ -68,9 +68,13 @@ export const useUserStore = create<UserStore>((set) => ({
   },
   clearUsers: () => {
     deleteCookie('user')
-    set({ currentUser: null })
+    // set({ currentUser: null })
 
     localStorage.removeItem('users')
-    set({ userList: [] })
+    // set({ userList: [] })
+    set({
+      currentUser: null,
+      userList: []
+    })
   }
 }))
