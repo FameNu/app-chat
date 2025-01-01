@@ -27,22 +27,25 @@ export const useUserStore = create<UserStore>((set, get) => ({
   setCurrentUser: (username: string) => {
     const userExist: number = get().userList.findIndex((user) => user.name === username)
     if (userExist === -1) {
-      const newUser: User = {
-        id: get().userList.length + 1,
-        name: username,
-        email: `${username}@mail.com`,
-        enteredAt: new Date(),
-        latestUserAt: new Date()
-      }
+      set((state) => {
+        const newUser: User = {
+          id: state.userList.length + 1,
+          name: username,
+          email: `${username}@mail.com`,
+          enteredAt: new Date(),
+          latestUserAt: new Date()
+        }
 
-      set({ currentUser: newUser })
+        const updateUserList: User[] = [...state.userList, newUser]
 
-      const users: User[] = [...get().userList, newUser]
-      set({ userList: users })
+        setCookie('user', JSON.stringify(newUser))
+        localStorage.setItem('users', JSON.stringify(updateUserList))
 
-      // save to cookie
-      setCookie('user', JSON.stringify(newUser))
-      localStorage.setItem('users', JSON.stringify(users))
+        return {
+          currentUser: newUser,
+          userList: updateUserList
+        }
+      })
     } else {
       const user: User = get().userList[userExist]
       user.latestUserAt = new Date()
