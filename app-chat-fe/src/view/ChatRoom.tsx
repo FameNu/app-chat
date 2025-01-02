@@ -96,7 +96,8 @@ const ChatRoom: React.FC = () => {
           Login
         </button>
       </form>
-      <div className="flex items-end gap-4">
+      <BoxListMessage chats={chats} username={currentUser?.name || ''} />
+      <div className="flex items-end gap-4 mb-4 max-w-2xl">
         <form
           className="flex-grow flex items-end gap-4 max-w-sm"
           onSubmit={(e) => handleEventSubmitForm(sendMessage, e)}
@@ -123,7 +124,6 @@ const ChatRoom: React.FC = () => {
           Get Log Chats
         </button>
       </div>
-      <BoxListMessage chats={chats} username={currentUser?.name || ''} />
     </div>
   )
 }
