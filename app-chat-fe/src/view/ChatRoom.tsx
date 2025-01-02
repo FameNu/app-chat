@@ -27,6 +27,7 @@ const ChatRoom: React.FC = () => {
       userStore.loadUser()
       haveLoaded.current = true
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
