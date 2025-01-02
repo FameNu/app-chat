@@ -77,7 +77,6 @@ const ChatRoom: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 h-full w-10/12 mx-auto">
       <h1 className="text-2xl font-bold text-center my-6">Welcome to u and me Chat Group</h1>
-      <h2>{currentUser?.name}</h2>
       <form
         className="flex items-end gap-4 max-w-sm"
         onSubmit={(e) => handleEventSubmitForm(updateUser, e)}
