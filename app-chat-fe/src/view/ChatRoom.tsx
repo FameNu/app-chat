@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import Chat from '@/models/Chat'
 import User from '@/models/User'
@@ -20,13 +20,14 @@ const ChatRoom: React.FC = () => {
   const [message, setMessage] = useState<string>('')
   const [username, setUsername] = useState<string>('')
 
-  useEffect(() => {
-    const startLoad = () => {
-      userStore.loadUser()
-    }
+  const haveLoaded = useRef(false)
 
-    startLoad()
-  })
+  useEffect(() => {
+    if (!haveLoaded.current) {
+      userStore.loadUser()
+      haveLoaded.current = true
+    }
+  }, [])
 
   const updateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
