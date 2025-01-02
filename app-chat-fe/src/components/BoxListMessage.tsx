@@ -12,7 +12,7 @@ function BoxListMessage({ chats, username }: { chats: Chat[]; username: string }
   }, [chats])
 
   return (
-    <div ref={boxlist} className="flex flex-col gap-4 p-16 border rounded-xl h-4/6 overflow-y-auto">
+    <div ref={boxlist} className="flex flex-col gap-4 py-4 px-6 border rounded-xl h-4/6 max-w-2xl overflow-y-auto">
       {chats.map((chat, index) => (
         <BoxMessage chat={chat} key={index} currentUser={username} />
       ))}
