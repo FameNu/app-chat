@@ -17,8 +17,8 @@ const ChatRoom: React.FC = () => {
 
   const [chats, setChats] = useState<Chat[]>(loadChats)
 
-  const [message, setMessage] = useState<string>('')
-  const [username, setUsername] = useState<string>('')
+  const message = useRef<HTMLInputElement>(null)
+  const username = useRef<HTMLInputElement>(null)
 
   const haveLoaded = useRef(false)
 
@@ -30,29 +30,21 @@ const ChatRoom: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const updateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value)
-  }
-
-  const updateMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value)
-  }
-
   const sendMessage = () => {
-    if (currentUser?.name.trim() === '' || message.trim() === '') {
+    if (currentUser?.name.trim() === '' || message.current?.value.trim() === '') {
       alert('Please fill in the username and message')
       return
     }
     const newChat: Chat = {
-      username: currentUser?.name || '',
-      message: message
+      username: currentUser!.name,
+      message: message.current!.value,
     }
     setChats([...chats, newChat])
     console.log(newChat)
 
     setCookie('chats', JSON.stringify([...chats, newChat]))
 
-    setMessage('')
+    message.current!.value = ''
   }
 
   const clearChat = () => {
@@ -65,7 +57,15 @@ const ChatRoom: React.FC = () => {
   }
 
   const updateUser = () => {
-    userStore.setCurrentUser(username)
+    if (username.current?.value.trim() === '') {
+      alert('Please fill in the username')
+      return
+    }
+    userStore.setCurrentUser(username.current!.value)
+
+    // clear input
+    username.current!.value = ''
+    message.current!.focus()
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -90,7 +90,7 @@ const ChatRoom: React.FC = () => {
             type="text"
             className="input input-bordered"
             placeholder="Type Here"
-            onChange={updateUsername}
+            ref={username}
           />
         </label>
         <button className="btn" type="submit">
@@ -110,8 +110,7 @@ const ChatRoom: React.FC = () => {
               type="text"
               className="input input-bordered"
               placeholder="Type Here"
-              value={message}
-              onChange={updateMessage}
+              ref={message}
             />
           </label>
           <button type="submit" className="btn">
