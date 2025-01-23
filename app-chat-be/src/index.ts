@@ -1,20 +1,8 @@
-import  express, { Request, Response } from 'express'
-import { Chat } from './model/Chat'
+import app from "./app"
 
-const app = express()
+const BASE_URL = process.env.BASE_URL || 'http://localhost'
 const PORT = process.env.PORT || 3000
 
-app.use(express.json())
-
-const chats: Chat[] = [
-  { username: 'Alice', message: 'Hello' },
-  { username: 'Bob', message: 'Hi' },
-]
-
-app.get('/', (req: Request, res: Response) => {
-  res.json(chats)
-})
-
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+  console.log(`Server is running on port ${BASE_URL}:${PORT}`)
 })
