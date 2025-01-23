@@ -1,14 +1,10 @@
-const express = require('express')
+import  express, { Request, Response } from 'express'
+import { Chat } from './model/Chat'
+
 const app = express()
-import { Request, Response } from 'express'
 const PORT = process.env.PORT || 3000
 
 app.use(express.json())
-
-interface Chat {
-  username: string
-  message: string
-}
 
 const chats: Chat[] = [
   { username: 'Alice', message: 'Hello' },
