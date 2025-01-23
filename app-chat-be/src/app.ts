@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express'
+import express, { Express, Request, Response } from 'express'
 import { Chat } from './model/Chat'
 
-const app = express()
+const app: Express = express()
 
 app.use(express.json())
 
