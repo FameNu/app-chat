@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "dev": "nodemon"
+    "dev:node": "nodemon",
+    "dev:bun": "bun --hot src/index.ts"
   }
 }
