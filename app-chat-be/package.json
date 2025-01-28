@@ -5,6 +5,7 @@
     "nodemon": "^3.1.9"
   },
   "devDependencies": {
+    "prettier": "3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },
