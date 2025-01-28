@@ -1,15 +1,8 @@
 import { create } from 'zustand'
 import type User from '@/models/User'
-import { getCookie, setCookie, deleteCookie } from '@/services/cookie'
+import { UserStore } from '@/models/AllStore'
 
-interface UserStore {
-  currentUser: User | null
-  userList: User[]
-  loadUser: () => void
-  setCurrentUser: (username: string) => void
-  logoutUser: () => void
-  clearUsers: () => void
-}
+import { getCookie, setCookie, deleteCookie } from '@/services/cookie'
 
 // collect user list on local storage
 // collect user (current user) on cookie
