@@ -1,32 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import Chat from '@/models/Chat'
 import User from '@/models/User'
 
-import { getCookie, setCookie, deleteCookie } from '@/services/cookie'
+import { setCookie, deleteCookie } from '@/services/cookie'
 import { useUserStore } from '@/store/userStore'
+import { useChatStore } from '@/store/chatStore'
 
 import BoxListMessage from '@/components/BoxListMessage'
 
-const fetchChats = async () => {
-  const response = await fetch('http://localhost:3000/chats')
-  const data = await response.json()
-  return data
-}
-
 const ChatRoom: React.FC = () => {
   const userStore = useUserStore()
+  const chatStore = useChatStore()
+
   const currentUser: User | null = useUserStore((state) => state.currentUser)
 
-  const [chats, setChats] = useState<Chat[]>([])
-  
-  useEffect(() => {
-    const loadChats = async () => {
-      const loadedChats: Chat[] = await fetchChats()
-      setChats(loadedChats)
-    }
-    loadChats()
-  }, [])
+  const chats: Chat[] = useChatStore((state) => state.chats)
 
   const message = useRef<HTMLInputElement>(null)
   const username = useRef<HTMLInputElement>(null)
@@ -36,6 +25,8 @@ const ChatRoom: React.FC = () => {
   useEffect(() => {
     if (!haveLoaded.current) {
       userStore.loadUser()
+      chatStore.loadChats()
+
       haveLoaded.current = true
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,7 +41,7 @@ const ChatRoom: React.FC = () => {
       username: currentUser!.name,
       message: message.current!.value,
     }
-    setChats([...chats, newChat])
+    // setChats([...chats, newChat])
     console.log(newChat)
 
     setCookie('chats', JSON.stringify([...chats, newChat]))
@@ -59,12 +50,13 @@ const ChatRoom: React.FC = () => {
   }
 
   const clearChat = () => {
-    setChats([])
+    // setChats([])
     deleteCookie('chats')
   }
 
   const logCookieChats = () => {
-    console.log(getCookie('chats'))
+    // console.log(getCookie('chats'))
+    console.log(chatStore.chats)
   }
 
   const updateUser = () => {

@@ -1,4 +1,5 @@
 import type User from "./User"
+import type Chat from "./Chat"
 
 export interface UserStore {
   currentUser: User | null
@@ -7,4 +8,9 @@ export interface UserStore {
   setCurrentUser: (username: string) => void
   logoutUser: () => void
   clearUsers: () => void
+}
+
+export interface ChatStore {
+  chats: Chat[]
+  loadChats: () => void
 }
