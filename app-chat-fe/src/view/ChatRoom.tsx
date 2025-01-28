@@ -8,14 +8,27 @@ import { useUserStore } from '@/store/userStore'
 
 import BoxListMessage from '@/components/BoxListMessage'
 
+const fetchChats = async (): Promise<string> => {
+  const response = await fetch('http://localhost:3000/chats')
+  const data = await response.json()
+  return data
+}
+
 const ChatRoom: React.FC = () => {
   const userStore = useUserStore()
   const currentUser: User | null = useUserStore((state) => state.currentUser)
 
-  const getChats: string | null = getCookie('chats')
-  const loadChats: Chat[] = getChats ? JSON.parse(getChats) : []
-
-  const [chats, setChats] = useState<Chat[]>(loadChats)
+  const [chats, setChats] = useState<Chat[]>([])
+  
+  useEffect(() => {
+    const loadChats = async () => {
+      const getChats: string | null = await fetchChats()
+      // const getChats: string | null = getCookie('chats')
+      const loadedChats: Chat[] = getChats ? JSON.parse(getChats) : []
+      setChats(loadedChats)
+    }
+    loadChats()
+  }, [])
 
   const message = useRef<HTMLInputElement>(null)
   const username = useRef<HTMLInputElement>(null)
