@@ -8,7 +8,7 @@ import { useUserStore } from '@/store/userStore'
 
 import BoxListMessage from '@/components/BoxListMessage'
 
-const fetchChats = async (): Promise<string> => {
+const fetchChats = async () => {
   const response = await fetch('http://localhost:3000/chats')
   const data = await response.json()
   return data
@@ -22,9 +22,7 @@ const ChatRoom: React.FC = () => {
   
   useEffect(() => {
     const loadChats = async () => {
-      const getChats: string | null = await fetchChats()
-      // const getChats: string | null = getCookie('chats')
-      const loadedChats: Chat[] = getChats ? JSON.parse(getChats) : []
+      const loadedChats: Chat[] = await fetchChats()
       setChats(loadedChats)
     }
     loadChats()
